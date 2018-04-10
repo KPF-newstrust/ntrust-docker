@@ -1,0 +1,37 @@
+FROM hqsvr:5000/ntrust-worker-base
+MAINTAINER Sunghun Kim <shkim@slowalk.co.kr>
+
+LABEL Description="NTrust worker node with libraries installed"
+
+RUN pip3 install JPype1-py3 
+RUN pip3 install konlpy
+RUN pip3 install pymongo
+RUN pip3 install pymysql
+RUN pip3 install pika
+
+RUN mkdir -p /opt/mecab
+
+ADD mecab/mecab-0.996-ko-0.9.2.tar.gz /opt/mecab
+RUN cd /opt/mecab/mecab-0.996-ko-0.9.2 && \
+	./configure && \
+	make && \
+	make check && \
+	make install
+
+ADD mecab/mecab-ko-dic-2.0.1-20150920.tar.gz /opt/mecab
+RUN cd /opt/mecab/mecab-ko-dic-2.0.1-20150920 && \
+	./autogen.sh && \
+	ldconfig && \
+	./configure && \
+	make && \
+	make install
+
+RUN cd /opt/mecab && \
+	git clone https://bitbucket.org/eunjeon/mecab-python-0.996.git && \
+	cd mecab-python-0.996 && \
+	python3 setup.py build && \
+	python3 setup.py install
+
+RUN rm -rf /opt/mecab/
+
+CMD bash

@@ -1,0 +1,15 @@
+FROM ubuntu:16.04
+MAINTAINER Sunghun Kim <shkim@slowalk.co.kr>
+
+LABEL Description="NTrust worker node with Java and Python"
+
+RUN apt-get update 
+RUN apt-get -y install openjdk-8-jdk-headless python3-pip git automake
+RUN pip3 install --upgrade pip
+
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV PYTHONIOENCODING=utf-8
+
+VOLUME ["/work"]
+
+CMD bash
