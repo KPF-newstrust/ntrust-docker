@@ -6,8 +6,7 @@ then
   git pull
 else
   cd /work
-  ssh-keyscan hqsvr >> ~/.ssh/known_hosts
-  git clone git@hqsvr:ntrust-worker.git
+  git clone https://github.com/KPF-newstrust/ntrust-worker.git
 fi
 
 while : ; do
